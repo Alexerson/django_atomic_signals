@@ -25,6 +25,11 @@ if not hasattr(Atomic, '_djts_patched'):
         self._djts_outermost_stack = []
 
     def atomic_enter(self):
+        try:
+            self._djts_outermost_stack
+        except AttributeError:
+            self._djts_outermost_stack = []
+            
         connection = get_connection(self.using)
 
         outermost = not connection.in_atomic_block
